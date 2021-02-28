@@ -148,8 +148,6 @@ int main(int argc, char **argv) {
     char cheatInput[MAX_CHEAT_SIZE];
     memset(cheatInput, 0, MAX_CHEAT_SIZE);
 
-    unsigned long lastTicks = SDL_GetTicks();
-
     SDL_Rect screenRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
     Uint32 now = 0, before = 0;
@@ -209,10 +207,7 @@ int main(int argc, char **argv) {
 
         // pause a little bit
         if(FPS_LIMIT_IN_MS - delta > 0) {
-            printf("sleeping: %i\n", FPS_LIMIT_IN_MS - delta);
             SDL_Delay(FPS_LIMIT_IN_MS - delta);
-        } else{
-            printf("not sleeping=%d\n", delta);
         }
     }
 
