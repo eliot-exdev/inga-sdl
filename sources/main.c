@@ -64,6 +64,7 @@ void PrintHelp() {
            "  -w, --window       enable window mode\n");
 }
 
+#define FPS_LIMIT_IN_MS 33
 int main(int argc, char **argv) {
     Arguments arguments;
     
@@ -151,9 +152,12 @@ int main(int argc, char **argv) {
 
     SDL_Rect screenRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
+    Uint32 now = 0, before = 0;
+    int delta = 0;
     while (!ShouldQuit()) {
-        Uint32 ticks = SDL_GetTicks();
-        int deltaTicks = (int) (ticks - lastTicks);
+        before = now;
+        now = SDL_GetTicks();
+        delta =(int) (now - before);
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -191,7 +195,7 @@ int main(int argc, char **argv) {
         }
 
         HandleMouseInGame(game, mouseX, mouseY, mouseButtonIndex);
-        UpdateGame(game, deltaTicks);
+        UpdateGame(game, delta);
 
         SDL_SetRenderTarget(renderer, prerenderTexture);
         DrawGame(game);
@@ -202,12 +206,13 @@ int main(int argc, char **argv) {
         SDL_RenderPresent(renderer);
 
         mouseButtonIndex = 0;
-        lastTicks = ticks;
 
-        // limit to 60 FPS
-        Uint32 ticksDelta = SDL_GetTicks() - ticks;
-        if (ticksDelta < 16) {
-            SDL_Delay(16 - ticksDelta);
+        // pause a little bit
+        if(FPS_LIMIT_IN_MS - delta > 0) {
+            printf("sleeping: %i\n", FPS_LIMIT_IN_MS - delta);
+            SDL_Delay(FPS_LIMIT_IN_MS - delta);
+        } else{
+            printf("not sleeping=%d\n", delta);
         }
     }
 

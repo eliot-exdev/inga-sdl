@@ -223,7 +223,7 @@ void HandleGameCheat(Game *game, const char *cheat) {
     }
 }
 
-void UpdateGame(Game *game, int deltaTicks) {
+void UpdateGame(Game *game, const int deltaTicks) {
     if (!game) return;
     
     if (UpdateMenu(game->menu, deltaTicks)) {
