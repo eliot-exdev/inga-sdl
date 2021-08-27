@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
 
     unsigned long lastTicks = SDL_GetTicks();
 
-    SDL_Rect screenRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+//    SDL_Rect screenRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
     while (!ShouldQuit()) {
         Uint32 ticks = SDL_GetTicks();
@@ -213,13 +213,13 @@ int main(int argc, char **argv) {
         
         HandleMouseInGame(game, mouseX, mouseY, buttonState);
         UpdateGame(game, deltaTicks);
-
-        SDL_SetRenderTarget(renderer, prerenderTexture);
+//        SDL_RenderClear(renderer);
+//        SDL_SetRenderTarget(renderer, prerenderTexture);
         DrawGame(game);
 
-        SDL_SetRenderTarget(renderer, NULL);
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, prerenderTexture, &screenRect, &screenRect);
+//        SDL_SetRenderTarget(renderer, NULL);
+//        SDL_RenderClear(renderer);
+//        SDL_RenderCopy(renderer, prerenderTexture, &screenRect, &screenRect);
         SDL_RenderPresent(renderer);
         
         if (buttonState == ButtonStateClickLeft || buttonState == ButtonStateClickRight) {
