@@ -42,10 +42,11 @@ typedef struct Arguments {
     bool help;
     bool window;
     bool borderless;
-} Arguments;
+    bool version;
+} Arguments_t;
 
-void ParseArguments(Arguments *arguments, int argc, char **argv) {
-    memset(arguments, 0, sizeof(Arguments));
+void ParseArguments(Arguments_t *arguments, const int argc, char **argv) {
+    memset(arguments, 0, sizeof(Arguments_t));
     for (int i = 1; i < argc; ++i) {
         if ((strcmp(argv[i], "--help") == 0) || (strcmp(argv[i], "-h")) == 0) {
             arguments->help = true;
@@ -53,6 +54,8 @@ void ParseArguments(Arguments *arguments, int argc, char **argv) {
             arguments->window = true;
         } else if ((strcmp(argv[i], "--borderless") == 0) || (strcmp(argv[i], "-b")) == 0) {
             arguments->borderless = true;
+        } else if ((strcmp(argv[i], "--version") == 0) || (strcmp(argv[i], "-v")) == 0) {
+            arguments->version = true;
         } else {
             printf("unknown argument: %s\n", argv[i]);
         }
@@ -63,15 +66,29 @@ void PrintHelp(void) {
     printf("usage:\n"
            "  -h, --help         show help message and quit\n"
            "  -w, --window       enable window mode\n"
-           "  -b, --borderless   removes window border (for better screenshots)\n");
+           "  -b, --borderless   removes window border (for better screenshots)\n"
+           "  -v, --version\n");
+}
+
+#define VERSION "Ermentrud 1.0 (10.09.2021)"
+
+#if defined __amigaos4__ || defined __morphos__
+unsigned char versiontag[] = "\0$VER: " VERSION;
+#endif
+
+void PrintVersion(void) {
+    printf(VERSION"\n");
 }
 
 int main(int argc, char **argv) {
-    Arguments arguments;
-    
+    Arguments_t arguments;
+
     ParseArguments(&arguments, argc, argv);
     if (arguments.help) {
         PrintHelp();
+        exit(EXIT_SUCCESS);
+    } else if (arguments.version) {
+        PrintVersion();
         exit(EXIT_SUCCESS);
     }
     
@@ -95,7 +112,7 @@ int main(int argc, char **argv) {
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     
-    Uint32 windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
+    Uint32 windowFlags = SDL_WINDOW_SHOWN;
     if (!arguments.window) {
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
@@ -110,8 +127,8 @@ int main(int argc, char **argv) {
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!renderer) {
-        // use software renderer as fallback
+    
+    if(!renderer) {
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         printf("using software renderer\n");
     } else {
