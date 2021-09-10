@@ -18,6 +18,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
+#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include "SDL_includes.h"
 #include "Config.h"
@@ -112,6 +113,9 @@ int main(int argc, char **argv) {
     if (!renderer) {
         // use software renderer as fallback
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+        printf("using software renderer\n");
+    } else {
+        printf("using hardware renderer\n");
     }
     
     if (!renderer) {
@@ -210,7 +214,7 @@ int main(int argc, char **argv) {
                     break;
             }
         }
-        
+
         HandleMouseInGame(game, mouseX, mouseY, buttonState);
         UpdateGame(game, deltaTicks);
 //        SDL_RenderClear(renderer);
@@ -222,13 +226,13 @@ int main(int argc, char **argv) {
 //        SDL_RenderClear(renderer);
 //        SDL_RenderCopy(renderer, prerenderTexture, &screenRect, &screenRect);
         SDL_RenderPresent(renderer);
-        
+
         if (buttonState == ButtonStateClickLeft || buttonState == ButtonStateClickRight) {
             buttonState = isMouseDown ? ButtonStateDrag : ButtonStateRelease;
         } else if (buttonState == ButtonStateRelease) {
             buttonState = ButtonStateIdle;
         }
-        
+
         lastTicks = ticks;
 
         // limit to 60 FPS
