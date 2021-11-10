@@ -18,7 +18,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include "SDL_includes.h"
 #include "Config.h"
@@ -70,7 +69,7 @@ void PrintHelp(void) {
            "  -v, --version\n");
 }
 
-#define VERSION "Ermentrud 1.0 (10.09.2021)"
+#define VERSION "Ermentrud 1.0 (10.11.2021)"
 
 #if defined __amigaos4__ || defined __morphos__
 unsigned char versiontag[] = "\0$VER: " VERSION;
@@ -127,7 +126,7 @@ int main(int argc, char **argv) {
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    
+
     if(!renderer) {
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         printf("using software renderer\n");
@@ -146,7 +145,7 @@ int main(int argc, char **argv) {
 //        printf("SDL_CreateTexture: %s\n", SDL_GetError());
 //        goto out;
 //    }
-    
+
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
         printf("Mix_OpenAudio: %s\n", Mix_GetError());
     }
@@ -262,10 +261,10 @@ int main(int argc, char **argv) {
     FreeGame(game);
     FreeImage(paletteImage);
     FreeGameConfig(config);
-    
+
     Mix_CloseAudio();
 
-out:
+    out:
     SDL_DestroyTexture(prerenderTexture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
