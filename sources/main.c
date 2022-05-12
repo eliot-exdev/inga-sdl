@@ -30,8 +30,8 @@
 #include <string.h>
 #include "version.h"
 
-#if defined __amigaos4__ || defined __morphos__
-unsigned char versiontag[] = "\0$VER: " VERSTAG;
+#if defined(__amigaos4__) || defined(__morphos__)
+unsigned char versiontag[] = VERSTAG;
 #endif
 
 // SDL_TEXTINPUTEVENT_TEXT_SIZE (0-terminator is already included)
