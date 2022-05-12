@@ -66,7 +66,8 @@ void PrintHelp(void) {
            "  -h, --help         show help message and quit\n"
            "  -w, --window       enable window mode\n"
            "  -b, --borderless   removes window border (for better screenshots)\n"
-           "  -v, --version      show version\n");
+           "  -v, --version      show version\n"
+    );
 }
 
 void PrintVersion(void) {
@@ -84,7 +85,7 @@ int main(int argc, char **argv) {
         PrintVersion();
         exit(EXIT_SUCCESS);
     }
-    
+
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     SDL_Texture *prerenderTexture = NULL;
@@ -104,15 +105,15 @@ int main(int argc, char **argv) {
     }
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    
+
     Uint32 windowFlags = SDL_WINDOW_SHOWN;
     if (!arguments.window) {
-        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        windowFlags |= SDL_WINDOW_FULLSCREEN;
     }
     if (arguments.borderless) {
         windowFlags |= SDL_WINDOW_BORDERLESS;
     }
-    
+
     window = SDL_CreateWindow(config->gameName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
     if (!window) {
         printf("SDL_CreateWindow: %s\n", SDL_GetError());
@@ -121,18 +122,18 @@ int main(int argc, char **argv) {
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    if(!renderer) {
+    if (!renderer) {
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         printf("using software renderer\n");
     } else {
         printf("using hardware renderer\n");
     }
-    
+
     if (!renderer) {
         printf("SDL_CreateRenderer: %s\n", SDL_GetError());
         goto out;
     }
-    
+
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 //    prerenderTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_HEIGHT);
 //    if (!prerenderTexture) {
@@ -178,9 +179,9 @@ int main(int argc, char **argv) {
                     SafeQuit(game);
                     break;
 #ifdef AUTOSAVE
-                case SDL_APP_WILLENTERBACKGROUND:
-                    AutosaveIfPossible(game);
-                    break;
+                    case SDL_APP_WILLENTERBACKGROUND:
+                        AutosaveIfPossible(game);
+                        break;
 #endif
                 case SDL_MOUSEMOTION:
                     mouseX = event.motion.x;
