@@ -39,21 +39,28 @@ set(INGA_SDL_SRC
         sources/Utils.c
         sources/
         sources/main.c
-        )
+)
 add_executable(${PROJECT_NAME}
         ${INGA_SDL_SRC}
-        )
+)
 target_include_directories(${PROJECT_NAME}
         PRIVATE sources
         PRIVATE ${SDL2_INCLUDE_DIR}/../
-        )
-target_link_libraries(${PROJECT_NAME}
-        SDL2::Main
-        SDL2::Mixer
-        SDL2::TTF
-        )
+)
 if (UNIX)
+    message(STATUS "linux build")
     target_link_libraries(${PROJECT_NAME}
-            m
-            )
+            PRIVATE SDL2::Main
+            PRIVATE SDL2::Mixer
+            PRIVATE SDL2::TTF
+            PRIVATE m
+    )
+elseif (MORPHOS)
+    message(STATUS "morphos build")
+    target_link_libraries(${PROJECT_NAME}
+            PRIVATE SDL2::Core SDL2::Mixer SDL2::TTF GL m
+    )
+    target_compile_definitions(${PROJECT_NAME}
+            PRIVATE MOS_SDL2_WORKAROUND
+    )
 endif ()
