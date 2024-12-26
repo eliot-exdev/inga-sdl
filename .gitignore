@@ -4,3 +4,4 @@ platform/macOS/Inga macOS.xcodeproj/project.xcworkspace/xcuserdata
 .idea
 cmake-build-debug
 cmake-build-release
+cmake-build-morphos
