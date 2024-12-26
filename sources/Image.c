@@ -85,7 +85,7 @@ Image *LoadImage(const char *filename, SDL_Palette *defaultPalette, bool createM
             }
 
             const size_t size = bytesPerRow * height;
-            Uint8 *pixels = calloc(sizeof(Uint8), size);
+            Uint8 *pixels = calloc(size,sizeof(Uint8));
             if (!pixels) {
                 printf("LoadImage: Out of memory\n");
             } else {
@@ -185,7 +185,7 @@ Image *LoadMaskedImage(const char *filename, Image *sourceImage) {
             Uint16 height = SDL_ReadBE16(file);
             Uint32 size = SDL_ReadBE32(file);
 
-            Uint8 *pixels = calloc(sizeof(Uint8), size);
+            Uint8 *pixels = calloc(size, sizeof(Uint8));
             if (!pixels) {
                 printf("LoadMaskedImage: Out of memory\n");
             } else {

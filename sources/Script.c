@@ -103,7 +103,7 @@ void ParseLog(Script *script, void *log) {
     char number[10];
     for (char *c = log; *c != 0; ++c) {
         if (*c == 0x0A) {
-            Label *label = calloc(sizeof(Label), 1);
+            Label *label = calloc( 1,sizeof(Label));
             
             if (!label) {
                 printf("ParseLog: Out of memory\n");
