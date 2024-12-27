@@ -45,8 +45,8 @@ add_executable(${PROJECT_NAME}
 )
 target_include_directories(${PROJECT_NAME}
         PRIVATE sources
-        PRIVATE ${SDL2_INCLUDE_DIR}/../
 )
+
 if (UNIX)
     message(STATUS "linux build")
     target_link_libraries(${PROJECT_NAME}
@@ -62,5 +62,12 @@ elseif (MORPHOS)
     )
     target_compile_definitions(${PROJECT_NAME}
             PRIVATE MOS_SDL2_WORKAROUND
+    )
+elseif(WIN32)
+    message(STATUS "windows build")
+    target_link_libraries(${PROJECT_NAME}
+            PRIVATE SDL2::Main
+            PRIVATE SDL2::Mixer
+            PRIVATE SDL2::TTF
     )
 endif ()
