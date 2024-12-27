@@ -6,8 +6,9 @@ if (UNIX)
     add_compile_options(-Wall -Wextra -pedantic -Wno-unused-parameter)
 endif ()
 
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SDL2)
+
+set(ERMENTRUD_BUILD False CACHE STRING "Enable this to change output name to Ermentrud")
 
 # find sdl
 find_package(SDL2 REQUIRED)
@@ -63,11 +64,15 @@ elseif (MORPHOS)
     target_compile_definitions(${PROJECT_NAME}
             PRIVATE MOS_SDL2_WORKAROUND
     )
-elseif(WIN32)
+elseif (WIN32)
     message(STATUS "windows build")
     target_link_libraries(${PROJECT_NAME}
             PRIVATE SDL2::Main
             PRIVATE SDL2::Mixer
             PRIVATE SDL2::TTF
     )
+endif ()
+
+if (ERMENTRUD_BUILD)
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Ermentrud")
 endif ()
