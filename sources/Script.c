@@ -21,6 +21,8 @@
 #include "Script.h"
 #include "SDL_includes.h"
 #include "Utils.h"
+#include <string.h>
+#include <stdlib.h>
 
 void ParseLog(Script *script, void *log);
 void FreeLabels(Script *script);
