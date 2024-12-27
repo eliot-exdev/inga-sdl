@@ -1,6 +1,6 @@
 #ifndef VERSION_H
 #define VERSION_H
-#define DATE "(12.05.2022)"
-#define VERSION "Ermentrud 1.1 " DATE
+#define DATE "(27.12.2024)"
+#define VERSION "Ermentrud 1.2 Alpha " DATE
 #define VERSTAG "\0$VER: " VERSION
 #endif
