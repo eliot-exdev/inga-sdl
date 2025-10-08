@@ -25,10 +25,11 @@
 #include "Game.h"
 #include "Font.h"
 #include "GameConfig.h"
+#include "version.h"
 
 #include <stdio.h>
 #include <string.h>
-#include "version.h"
+
 
 #if defined(__amigaos4__) || defined(__morphos__)
 unsigned char versiontag[] = VERSTAG;
@@ -123,6 +124,7 @@ int main(int argc, char **argv) {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     if (!renderer) {
+        // use software renderer as fallback
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         printf("using software renderer\n");
     } else {

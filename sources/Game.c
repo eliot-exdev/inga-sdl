@@ -21,6 +21,7 @@
 #include "Game.h"
 #include "Global.h"
 #include "Cursor.h"
+#include "Utils.h"
 #include <time.h>
 
 void LookAtItem(Game *game, InventoryItem *focusedItem);
@@ -40,7 +41,6 @@ Game *CreateGame(GameConfig *config) {
         game->font = LoadFont("Font", 16);
         game->cursorNormal = LoadCursor("CursorNormal");
         game->cursorDrag = LoadCursor("CursorDrag");
-        game->script = LoadScript("story");
 #ifdef AUTOSAVE
         GameState *autosaveGameState = LoadGameState("slot_0", config);
         game->gameState = autosaveGameState ? autosaveGameState : CreateGameState();
@@ -65,14 +65,17 @@ Game *CreateGame(GameConfig *config) {
         element->imageSet = LoadImageSet("Hauptperson", GetGlobalPalette(), true);
         game->mainPerson = element;
         
-        SDL_Color pauseColor = {255, 192, 0, 255};
-        game->pauseImage = CreateImageFromText("Spielpause", game->font, pauseColor);
-        
-        HideCursor();
-        
-        Label *label = GetLabelWithName(game->script, game->gameState->locationLabel);
-        if (label) {
-            RunThread(game->mainThread, label->ptr);
+        // select language, if needed
+        if (game->config->numLanguages > 0) {
+            char language[LANGUAGE_SIZE];
+            if (LoadPref(language, LANGUAGE_SIZE, "language", game->config)) {
+                SetLanguage(game, language, false);
+            } else {
+                // language selection
+                OpenMenu(game->menu, 8);
+            }
+        } else {
+            SetLanguage(game, NULL, false);
         }
     }
     return game;
@@ -83,6 +86,9 @@ void FreeGame(Game *game) {
     if (game->logFile) {
         fclose(game->logFile);
     }
+    if (game->menuTexts) {
+        cJSON_Delete(game->menuTexts);
+    }
     FreeSoundManager(game->soundManager);
     FreeSlotList(game->slotList);
     FreeMenu(game->menu);
@@ -91,6 +97,7 @@ void FreeGame(Game *game) {
 #ifdef TOUCH
     FreeImage(game->inventoryButtonImage);
 #endif
+    FreeImage(game->pauseImage);
     FreeImage(game->focus.image);
     FreeSequence(game->sequence);
     FreeLocation(game->location);
@@ -443,6 +450,58 @@ void UpdateIdleProg(Game *game, int deltaTicks) {
     }
 }
 
+void SetLanguage(Game *game, const char *language, bool save) {
+    if (!game) return;
+    
+    FreeScript(game->script);
+    game->script = NULL;
+    
+    FreeImage(game->pauseImage);
+    game->pauseImage = NULL;
+    
+    if (game->menuTexts) {
+        cJSON_Delete(game->menuTexts);
+        game->menuTexts = NULL;
+    }
+    
+    if (save && language) {
+        SavePref("language", language, game->config);
+    }
+    
+    // menu texts
+    if (language) {
+        char path[FILENAME_MAX];
+        GameFilePath(path, "MenuTexts", language, "json");
+        
+        char *jsonString = LoadFile(path, NULL);
+        if (jsonString) {
+            game->menuTexts = cJSON_Parse(jsonString);
+            if (!game->menuTexts) {
+                printf("SetLanguage: json parse error\n");
+            }
+        }
+    }
+    
+    // story
+    if (language) {
+        char filename[30];
+        sprintf(filename, "story_%s", language);
+        game->script = LoadScript(filename);
+    } else {
+        game->script = LoadScript("story");
+    }
+    
+    SDL_Color pauseColor = {255, 192, 0, 255};
+    game->pauseImage = CreateImageFromText(GetText(game, "game_paused"), game->font, pauseColor);
+    
+    Label *label = GetLabelWithName(game->script, game->gameState->locationLabel);
+    if (label) {
+        RunThread(game->mainThread, label->ptr);
+    }
+    
+    HideCursor();
+}
+
 void SetLocation(Game *game, int id, const char *background) {
     game->mainThread->talkingElement = NULL;
     ElementStop(game->mainPerson);
@@ -494,10 +553,11 @@ void SaveGameSlot(Game *game, int slot) {
     sprintf(filename, "slot_%d", slot);
     SaveGameState(game->gameState, filename, game->config);
 #ifdef AUTOSAVE
-    GameStateName(game->gameState, slotname, slot == 0);
+    bool isAutosave = (slot == 0);
 #else
-    GameStateName(game->gameState, slotname, false);
+    bool isAutosave = false;
 #endif
+    GameStateName(game->gameState, slotname, isAutosave, GetText(game, "autosave"), GetText(game, "playing_time"));
     SetSlotName(game->slotList, slot, slotname, game->config);
 }
 
@@ -573,4 +633,17 @@ void InitLogger(Game *game) {
     time_t now;
     time(&now);
     fprintf(game->logFile, "\n--- New Session ---\n\n%s", ctime(&now));
+}
+
+const char *GetText(Game *game, const char *key) {
+    if (!game) return key;
+        
+    if (game->menuTexts) {
+        const cJSON *item = cJSON_GetObjectItemCaseSensitive(game->menuTexts, key);
+        if (cJSON_IsString(item)) {
+            return item->valuestring;
+        }
+    }
+    
+    return key;
 }

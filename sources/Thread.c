@@ -609,13 +609,14 @@ unsigned long LaufeINGA(Thread *thread, Game *game, unsigned long ptr, bool *wie
         RefreshGameState(game);
         const char *filename = peeks(script, ptr + 2);
 #ifdef TOUCH
+        //TODO: how localize?
         if (strcmp(filename, "SeqTutorial") == 0) {
-            game->sequence = LoadSequence("SeqTutorialMobile");
+            game->sequence = LoadSequence("SeqTutorialMobile", game->font);
         } else {
-            game->sequence = LoadSequence(filename);
+            game->sequence = LoadSequence(filename, game->font);
         }
 #else
-        game->sequence = LoadSequence(filename);
+        game->sequence = LoadSequence(filename, game->font);
 #endif
         *wieder = false;
         return(ptr + 6);

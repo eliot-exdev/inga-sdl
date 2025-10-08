@@ -23,6 +23,7 @@
 #include <string.h>
 #include "Global.h"
 #include "GameConfig.h"
+#include "Utils.h"
 
 void FreeVariables(GameState *gameState);
 void FreeInventoryItems(GameState *gameState);
@@ -47,16 +48,10 @@ void FreeGameState(GameState *gameState) {
     free(gameState);
 }
 
-void GameStatePath(GameConfig *config, const char *filename, char *path) {
-    char *prefPath = SDL_GetPrefPath(config->organizationName, config->gameName);
-    sprintf(path, "%s%s", prefPath, filename);
-    SDL_free(prefPath);
-}
-
 GameState *LoadGameState(const char *filename, GameConfig *config) {
     GameState *gameState = NULL;
     char path[FILENAME_MAX];
-    GameStatePath(config, filename, path);
+    GamePrefPath(path, filename, config);
     SDL_RWops *file = SDL_RWFromFile(path, "rb");
     if (!file) {
         printf("LoadGameState: %s\n", SDL_GetError());
@@ -96,7 +91,7 @@ GameState *LoadGameState(const char *filename, GameConfig *config) {
 
 void SaveGameState(GameState *gameState, const char *filename, GameConfig *config) {
     char path[FILENAME_MAX];
-    GameStatePath(config, filename, path);
+    GamePrefPath(path, filename, config);
     SDL_RWops *file = SDL_RWFromFile(path, "wb");
     if (!file) {
         printf("SaveGameState: %s\n", SDL_GetError());
@@ -266,11 +261,11 @@ void UpdatePlaytime(GameState *gameState, int deltaTicks) {
     gameState->playtimeTicks += deltaTicks;
 }
 
-void GameStateName(GameState *gameState, char *name, bool isAutosave) {
+void GameStateName(GameState *gameState, char *name, bool isAutosave, const char *textAuto, const char *textTime) {
     unsigned long seconds = gameState->playtimeTicks / 1000;
     unsigned long minutes = seconds / 60;
     unsigned long hours = minutes / 60;
-    char *title = isAutosave ? "Automatisch" : "Spielzeit";
+    const char *title = isAutosave ? textAuto : textTime;
     if (hours > 0) {
         sprintf(name, "%s %luh %lum %lus", title, hours, minutes % 60, seconds % 60);
     } else {
