@@ -1,0 +1,24 @@
+IDI_ICON1               ICON    DISCARDABLE     "icon.ico"
+
+1 VERSIONINFO
+    FILEVERSION    0,0,0,0
+    PRODUCTVERSION 1,2,0,0
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "000004B0"
+        {
+            VALUE "CompanyName",        "Inutilis\0"
+            VALUE "FileDescription",    "Ementrud Graphic Adventure\0"
+            VALUE "FileVersion",        "1.2\0"
+            VALUE "OriginalFilename",   "Ermentrud.exe\0"
+            VALUE "ProductName",        "Ermentrud\0"
+            VALUE "ProductVersion",     "1.2\0"
+            VALUE "LegalCopyright",     "Copyright 2025 Inutilis"
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0000, 0x04B0
+    }
+}

@@ -41,6 +41,10 @@ set(INGA_SDL_SRC
         sources/
         sources/main.c
 )
+if (WIN32)
+    list(APPEND INGA_SDL_SRC platform/windows/win.rc)
+endif ()
+
 add_executable(${PROJECT_NAME}
         ${INGA_SDL_SRC}
 )
