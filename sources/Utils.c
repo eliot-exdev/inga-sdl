@@ -25,11 +25,6 @@ Vector MakeVector(float x, float y) {
     return vector;
 }
 
-SDL_Rect MakeRect(int x, int y, int width, int height) {
-    SDL_Rect rect = {x, y, width, height};
-    return rect;
-}
-
 SDL_Rect MakeRectFromTo(int x1, int y1, int x2, int y2) {
     SDL_Rect rect = {x1, y1, x2 - x1 + 1, y2 - y1 + 1};
     return rect;
