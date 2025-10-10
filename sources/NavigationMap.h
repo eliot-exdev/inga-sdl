@@ -35,7 +35,6 @@ typedef struct NavigationMap {
 typedef struct NavigationPath {
     int numPositions;
     Vector positions[MAX_PATH_SIZE];
-    bool reachesDestination;
 } NavigationPath;
 
 NavigationMap *LoadNavigationMap(const char *filename);

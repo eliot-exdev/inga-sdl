@@ -73,8 +73,7 @@ void FreeNavigationMap(NavigationMap *navigationMap) {
 
 NavigationPath *CreateNavigationPath(NavigationMap *navigationMap, Vector origin, Vector destination) {
     NavigationPath *path = calloc(1, sizeof(NavigationPath));
-    path->reachesDestination = true;
-    
+
     if (navigationMap) {
         // adjust destination
         AdjustPositionForNavigation(navigationMap, &destination);
@@ -89,7 +88,6 @@ NavigationPath *CreateNavigationPath(NavigationMap *navigationMap, Vector origin
             if (navigationMap->topLimits[x] >= navigationMap->bottomLimits[x]) {
                 destination.x = safeX;
                 destination.y = (navigationMap->topLimits[safeX] + navigationMap->bottomLimits[safeX]) * 0.5;
-                path->reachesDestination = false;
                 break;
             }
             safeX = x;
