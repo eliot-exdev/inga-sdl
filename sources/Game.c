@@ -479,6 +479,7 @@ void SetLanguage(Game *game, const char *language, bool save) {
             if (!game->menuTexts) {
                 printf("SetLanguage: json parse error\n");
             }
+            free(jsonString);
         }
     }
     
