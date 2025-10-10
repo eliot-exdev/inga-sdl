@@ -192,11 +192,11 @@ unsigned long LaufeINGA(Thread *thread, Game *game, unsigned long ptr, bool *wie
         return(ptr + 18);
     }
     if (opc == 82) { //PersonProg.
-        Thread *thread = CreateThread(peekv(game, ptr + 2));
-        if (thread) {
-            thread->ptr = ptr + 8;
-            thread->isActive = true;
-            AddThread(game->location, thread);
+        Thread *thread_ = CreateThread(peekv(game, ptr + 2));
+        if (thread_) {
+            thread_->ptr = ptr + 8;
+            thread_->isActive = true;
+            AddThread(game->location, thread_);
         }
         return(peekl(script, ptr + 4));
     }
@@ -283,11 +283,11 @@ unsigned long LaufeINGA(Thread *thread, Game *game, unsigned long ptr, bool *wie
                 *wieder = false;
                 return(ptr);
             }
-            int factor = peekv(game, ptr + 4);
-            if (factor < 1) {
-                factor = 1;
+            float factor = peekv(game, ptr + 4);
+            if (factor < 1.0f) {
+                factor = 1.0f;
             }
-            element->speed = factor * 20; // pxl/s
+            element->speed = factor * 20.0f; // pxl/s
         }
         return(ptr + 6);
     }
@@ -442,9 +442,9 @@ unsigned long LaufeINGA(Thread *thread, Game *game, unsigned long ptr, bool *wie
         }
     }
     if (opc == 30) { //Aktiv.
-        Thread *thread = GetThread(game->location, peekv(game, ptr + 2));
-        if (thread) {
-            thread->isActive = true;
+        Thread *thread_ = GetThread(game->location, peekv(game, ptr + 2));
+        if (thread_) {
+            thread_->isActive = true;
         }
         return(ptr + 4);
     }
@@ -452,9 +452,9 @@ unsigned long LaufeINGA(Thread *thread, Game *game, unsigned long ptr, bool *wie
         int id = peekv(game, ptr + 2);
         Element *element = GetElement(game->location, id);
         ElementStop(element);
-        Thread *thread = GetThread(game->location, id);
-        if (thread) {
-            thread->isActive = false;
+        Thread *thread_ = GetThread(game->location, id);
+        if (thread_) {
+            thread_->isActive = false;
         }
         return(ptr + 4);
     }
