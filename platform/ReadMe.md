@@ -1,5 +1,5 @@
 # Ermentrud
-A graphic adventure.
+A graphic adventure.  
 More information about this game can be found on the official [homepage](https://www.inutilis.com/portfolio/ermentrud-das-spiel).
 
 # Key bindings
