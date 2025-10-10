@@ -15,7 +15,7 @@ More information about this game can be found on the official [homepage](https:/
 - Johannes Conrady: Story
 - Jan Heinemann: Colorization
 - Niels Nielsen: - Taverne guitar
-- André Geisler: - Programming, MorphOS port, Windows port
+- André Geisler: - Programming, MorphOs port, Windows port
 - Alexander Riedel: - AmigaOS 4 port
 - Christian Sauer: AmigaOS 3 port
 - Barbara D. S.: Logo advice
