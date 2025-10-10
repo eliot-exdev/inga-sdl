@@ -23,7 +23,7 @@
 #include "Global.h"
 #include "SDL_includes.h"
 
-Dialog *CreateDialog() {
+Dialog *CreateDialog(void) {
     Dialog *dialog = calloc(1, sizeof(Dialog));
     if (!dialog) {
         printf("CreateDialog: Out of memory\n");

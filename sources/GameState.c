@@ -29,7 +29,7 @@ void FreeVariables(GameState *gameState);
 void FreeInventoryItems(GameState *gameState);
 void FreeInventoryItem(InventoryItem *item);
 
-GameState *CreateGameState() {
+GameState *CreateGameState(void) {
     GameState *gameState = calloc(1, sizeof(GameState));
     if (!gameState) {
         printf("CreateGameState: Out of memory\n");
@@ -235,7 +235,7 @@ void RemoveInventoryItem(GameState *gameState, int id) {
             }
             prevItem = currItem;
             currItem = currItem->next;
-        };
+        }
     }
 }
 

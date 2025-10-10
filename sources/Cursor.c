@@ -51,6 +51,6 @@ void SetCursor(SDL_Cursor *cursor) {
     SDL_ShowCursor(SDL_ENABLE);
 }
 
-void HideCursor() {
+void HideCursor(void) {
     SDL_ShowCursor(SDL_DISABLE);
 }

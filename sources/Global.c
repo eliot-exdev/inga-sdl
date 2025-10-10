@@ -28,7 +28,7 @@ void SetGlobalRenderer(SDL_Renderer *renderer) {
     globalRenderer = renderer;
 }
 
-SDL_Renderer *GetGlobalRenderer() {
+SDL_Renderer *GetGlobalRenderer(void) {
     return globalRenderer;
 }
 
@@ -48,7 +48,7 @@ bool ShouldQuit(void) {
     return shouldQuit;
 }
 
-bool CanHover(ButtonState buttonState) {
+bool CanHover(const ButtonState buttonState) {
 #ifdef TOUCH
     return buttonState != ButtonStateIdle;
 #else
