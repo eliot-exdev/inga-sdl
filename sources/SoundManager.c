@@ -24,7 +24,7 @@
 void FreeTrack(SoundManager *soundManager);
 
 
-SoundManager *CreateSoundManager() {
+SoundManager *CreateSoundManager(void) {
     SoundManager *soundManager = calloc(1, sizeof(struct SoundManager));
     if (!soundManager) {
         printf("CreateSoundManager: Out of memory\n");
