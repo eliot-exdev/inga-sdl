@@ -6,7 +6,7 @@ LD_FLAGS_MOS_GCC=-Lgg:usr/local/lib -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lm
 
 INCLUDES_MOS_GCC=-Igg:/usr/local/include
 
-CC_GCC=ppc-morphos-gcc-11
+CC_GCC=ppc-morphos-gcc-15
 
 all: IngaSdlRelease_mos IngaSdlDebug_mos Ermentrud_mos
 
