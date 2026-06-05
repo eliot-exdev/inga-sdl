@@ -332,7 +332,7 @@ void HandleGameCheat(Game *game, const char *cheat) {
     } else if (cheat[0] == 'v' && cheat[1] == 'v' && cheat[2] == 'v') {
         int id = atoi(cheat + 3);
         if (id > 0) {
-            char *s = strchr(cheat, ' ');
+            const char *s = strchr(cheat, ' ');
             if (s) {
                 int value = atoi(s);
                 if (value > 0) {
